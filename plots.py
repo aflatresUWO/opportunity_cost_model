@@ -251,4 +251,39 @@ fig.colorbar (cp)#Add a colorbar to a plot
 plt.xlabel('$\Delta d_b$')
 plt.ylabel("s_u")
 plt.title("Contour plot of ESS vs $\Delta b$ and survival of waiters")
+#######################################
+data = pd.read_csv('result_s_ds.csv')
+ds = np.array(data.loc[:,"d_s"])
+n_ds = int(np.sqrt(len(ds)))
+print(n_ds)
+ds= ds[0:n_ds]
+print(ds)
+
+s = np.array(data.loc[:,"s"])
+h_data = np.array(data.loc[:,"h_x"])
+h_data = h_data[s>0]
+s=s[s>0]
+n_s = int(len(s)/len(ds))
+s_u = np.zeros(n_s)
+for i in range(0,n_s):
+    s_u[i] = s[i*len(ds)]
+print(s_u)
+h = np.zeros((n_s,n_ds))
+k = 0
+
+
+for i in range(0,n_s):
+    for j in range(0,n_ds):
+        h[i,j] = h_data[k]
+        k+=1
+print(db)
 fig, ax=plt.subplots()
+
+
+level = np.linspace(0,1,10)
+cp=ax.contourf(ds,s_u,h,levels = level)
+
+fig.colorbar (cp)#Add a colorbar to a plot
+plt.xlabel('$\Delta d_s$')
+plt.ylabel("s_u")
+plt.title("Contour plot of ESS vs $\Delta s$ and survival of waiters")
