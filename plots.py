@@ -33,13 +33,48 @@ for i in range(0,n_p):
         k+=1
 fig, ax=plt.subplots()
 
-level = np.linspace(0,1,10)
+level = np.linspace(0,1,7)
+cp=ax.contourf(db,P,h,levels = level)
+
+fig.colorbar(cp)#Add a colorbar to a plot
+plt.xlabel('Fecundity benefits',fontsize = 15.0)
+plt.ylabel("Probability of establishment",fontsize = 15.0)
+plt.title("Contour plot of ESS $h_x$ vs $\Delta b$ and probability of establishment",fontsize = 15.0)
+##################
+
+data = pd.read_csv('result_p_b2.csv')
+
+db = np.array(data.loc[:,"d_b"])
+n_db = int(np.sqrt(len(db)))
+db = db[0:n_db]
+
+p = np.array(data.loc[:,"P"])
+h_data = np.array(data.loc[:,"h_x"])
+h_data = h_data[p>0]
+
+p=p[p>0]
+
+n_p = int(len(p)/len(db))
+P = np.zeros(n_p)
+
+for i in range(0,int(len(p)/len(db))):
+    P[i] = p[i*len(db)]
+h = np.zeros((n_p,n_db))
+k = 0
+
+for i in range(0,n_p):
+    for j in range(0,len(db)):
+        h[i,j] = h_data[k]
+        k+=1
+
+fig, ax=plt.subplots()
+level = np.linspace(0,1,7)
 cp=ax.contourf(db,P,h,levels = level)
 
 fig.colorbar (cp)#Add a colorbar to a plot
-plt.xlabel('Fecundity benefits')
-plt.ylabel("Probability of establishment")
-plt.title("Contour plot of ESS $h_x$ vs $\Delta b$ and probability of establishment")
+plt.xlabel('Fecundity benefits',fontsize = 15.0)
+plt.ylabel("Probability of establishment",fontsize = 15.0)
+plt.title("Contour plot of ESS $h_x$ vs $\Delta b$ and probability of establishment",fontsize = 15.0)
 
 ###################
 
@@ -71,8 +106,8 @@ level = np.linspace(0,1,10)
 cp=ax.contourf(db,P,h,levels = level)
 
 fig.colorbar (cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta b$')
-plt.ylabel("P")
+plt.xlabel('$\Delta b$',fontsize = 15.0)
+plt.ylabel("P",fontsize = 15.0)
 plt.title("Contour plot of ESS h_y vs $\Delta b$ and probability of establishment")
 
 #################
@@ -97,17 +132,17 @@ fig, ax=plt.subplots()
 level = np.linspace(0,1,10)
 cp=ax.contourf(db,P,(P2-P1)/P1)
 fig.colorbar(cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta b$')
-plt.ylabel("P before evolution")
+plt.xlabel('$\Delta b$',fontsize = 15.0)
+plt.ylabel("P before evolution",fontsize = 15.0)
 plt.title("Contour plot of $\Delta P$ vs $\Delta b$ and probability of establishment before evo")
 
 fig, ax=plt.subplots()
 
 plt.scatter(P2,h)
-plt.ylim(0.5,1)
+plt.ylim(0,1)
 ######################
 fig, ax=plt.subplots()
-p = np.array(data.loc[:,"P"])
+p = np.array(data.loc[:,"P2"])
 h= np.array(data.loc[:,"h_x"])
 b= np.array(data.loc[:,"d_b"])
 
@@ -121,12 +156,12 @@ H2 = np.zeros(n_p)
 P3 = np.zeros(n_p)
 H3 = np.zeros(n_p)
 for i in range(0,int(len(p)/len(db))):
-    P1[i] = p[10+i*len(db)]
-    H1[i] = h[10+i*len(db)]
+    P1[i] = p[18+i*len(db)]
+    H1[i] = h[18+i*len(db)]
     P2[i] = p[14+i*len(db)]
     H2[i] = h[14+i*len(db)]
-    P3[i] = p[18+i*len(db)]
-    H3[i] = h[18+i*len(db)]
+    P3[i] = p[10+i*len(db)]
+    H3[i] = h[10+i*len(db)]
 P1 = P1[P1>0]
 H1 = H1[H1>0]
 P2 = P2[P2>0]
@@ -137,11 +172,55 @@ plt.scatter(P1,H1)
 plt.scatter(P2,H2)
 plt.scatter(P3,H3)
 
-plt.xlabel('Probability of establishment')
-plt.ylabel("$h_x$")
-plt.legend(["$d_b=0.47$","$d_b=0.68$","$d_b=0.89$"])
-plt.title("Cooperation level $h_x$ value vs probability of establishment")
+plt.xlabel('Probability of establishment',fontsize = 15.0)
+plt.ylabel("$h_x$",fontsize = 15.0)
+plt.legend(["$\Delta b=0.89$","$\Delta b=0.68$","$\Delta b=0.47$"])
+plt.title("Cooperation level $h_x$ value vs probability of establishment",fontsize = 15.0)
+########################
 
+
+data = pd.read_csv('result_p_db_b.csv')
+
+db = np.array(data.loc[:,"d_b"])
+n_db = int(np.sqrt(len(db)))
+db = db[0:n_db]
+b = np.array(data.loc[:,"bx"])
+p = np.array(data.loc[:,"P"])
+h_data = np.array(data.loc[:,"h_x"])
+h_data = h_data[p>0]
+b = b[p>0]
+p=p[p>0]
+
+n_p = int(len(p)/len(db))
+P = np.zeros(n_p)
+
+for i in range(0,int(len(p)/len(db))):
+    P[i] = p[i*len(db)]
+h = np.zeros((n_p,n_db))
+k = 0
+
+for i in range(0,n_p):
+    for j in range(0,len(db)):
+        h[i,j] = h_data[k]
+        k+=1
+help_b = h_data*b
+print(help_b)
+helpb = np.zeros((n_p,n_db))
+k = 0
+
+for i in range(0,n_p):
+    for j in range(0,len(db)):
+        helpb[i,j] = help_b[k]
+        k+=1
+fig, ax=plt.subplots()
+helpb = 1-np.exp(-helpb)
+level = np.linspace(0,1,10)
+cp=ax.contourf(db,P,helpb)
+
+fig.colorbar (cp)#Add a colorbar to a plot
+plt.xlabel('Fecundity benefits',fontsize = 15.0)
+plt.ylabel("Probability of establishment",fontsize = 15.0)
+plt.title("Actual level of help")
 ###################################
 data = pd.read_csv('result_p_s.csv')
 ds = np.array(data.loc[:,"d_s"])
@@ -174,8 +253,8 @@ level = np.linspace(0,1,20)
 cp=ax.contourf(ds,P,h)
 
 fig.colorbar (cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta s$')
-plt.ylabel("P")
+plt.xlabel('$\Delta s$',fontsize = 15.0)
+plt.ylabel("P",fontsize = 15.0)
 plt.title("Contour plot of ESS  h_x vs $\Delta s$ and probability of establishment ")
 
 ##############################
@@ -210,8 +289,8 @@ level = np.linspace(0,1,10)
 cp=ax.contourf(ds,P,h,levels = level)
 
 fig.colorbar (cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta s$')
-plt.ylabel("P")
+plt.xlabel('$\Delta s$',fontsize = 15.0)
+plt.ylabel("P",fontsize = 15.0)
 plt.title("Contour plot of ESS h_y vs $\Delta s$ and probability of establishment ")
 
 ##############################
@@ -236,8 +315,8 @@ fig, ax=plt.subplots()
 level = np.linspace(0,1,10)
 cp=ax.contourf(ds,P,(P2-P1)/P1)
 fig.colorbar(cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta s$')
-plt.ylabel("P before evolution")
+plt.xlabel('$\Delta s$',fontsize = 15.0)
+plt.ylabel("P before evolution",fontsize = 15.0)
 plt.title("Contour plot of $\Delta P$ vs $\Delta s$ and probability of establishment before evo")
 #############################
 
@@ -245,24 +324,26 @@ fig, ax=plt.subplots()
 p = np.array(data.loc[:,"P"])
 h= np.array(data.loc[:,"h_x"])
 ds= np.array(data.loc[:,"d_s"])
-print(ds)
 n_p = 20
-
-
+n_ds = int(np.sqrt(len(ds)))
+ds = ds[0:n_ds]
+print(h)
 P1 = np.zeros(n_p)
 H1 = np.zeros(n_p)
 P2 = np.zeros(n_p)
 H2 = np.zeros(n_p)
 P3 = np.zeros(n_p)
 H3 = np.zeros(n_p)
+print(int(len(p)/len(ds)))
 for i in range(0,int(len(p)/len(ds))):
-    P1[i] = p[10+i*len(ds)]
-    H1[i] = h[10+i*len(ds)]
+    P1[i] = p[18+i*len(ds)]
+    
+    H1[i] = h[18+i*len(ds)]
     P2[i] = p[14+i*len(ds)]
     H2[i] = h[14+i*len(ds)]
-    P3[i] = p[18+i*len(ds)]
-    H3[i] = h[18+i*len(ds)]
-print(P1)
+    P3[i] = p[10+i*len(ds)]
+    H3[i] = h[10+i*len(ds)]
+
 P1 = P1[P1>0]
 H1 = H1[H1>0]
 P2 = P2[P2>0]
@@ -273,15 +354,15 @@ plt.scatter(P1,H1)
 plt.scatter(P2,H2)
 plt.scatter(P3,H3)
 
-plt.xlabel('Probability of establishment')
-plt.ylabel("$h_x$")
-plt.legend(["$d_b=0.47$","$d_b=0.68$","$d_b=0.89$"])
+plt.xlabel('Probability of establishment',fontsize = 15.0)
+plt.ylabel("$h_x$",fontsize = 15.0)
+plt.legend(["$\Delta s=0.89$","$\Delta s=0.68$","$ \Delta s=0.47$"])
 plt.title("Cooperation level $h_x$ value vs probability of establishment")
 
 
 #####################
 
-data = pd.read_csv('result_phi_bx.csv')
+data = pd.read_csv('result_phi_bx_ga.csv')
 db = np.array(data.loc[:,"d_b"])
 n_db = int(np.sqrt(len(db)))
 db = db[0:n_db]
@@ -290,13 +371,12 @@ db = db[0:n_db]
 
 phi = np.array(data.loc[:,"phi"])
 h_data = np.array(data.loc[:,"h_x"])
-print(phi)
+
 
 n_phi = int(len(phi)/len(db))
 Phi = np.zeros(n_phi)
 for i in range(0,n_phi):
     Phi[i] = phi[i*n_db]
-print(Phi)
 h = np.zeros((n_phi,n_db))
 
 k = 0
@@ -308,16 +388,50 @@ for i in range(0,n_phi):
 
 fig, ax = plt.subplots()
 
-level = np.linspace(0,1,10)
-cp=ax.contourf(db,Phi,h,levels = level)
+level = np.linspace(0,1,7)
+cp=ax.contourf(db,Phi,h,levels= level)
 
 fig.colorbar (cp)#Add a colorbar to a plot
-plt.xlabel('$\Delta s$')
-plt.ylabel("Phi")
-plt.title("Contour plot of ESS h_y vs $\Delta s$ and probability of establishment ")
+plt.xlabel('$\Delta b$',fontsize = 15.0)
+plt.ylabel("$\Phi$",fontsize = 15.0)
+plt.title("Contour plot of ESS $h_x$ vs $\Delta b$ and $\Phi$ ",fontsize =15.0)
 
 
-print("bit")
+
+##############################
+data = pd.read_csv('result_phi_bx_ga.csv')
+db = np.array(data.loc[:,"d_b"])
+n_db = int(np.sqrt(len(db)))
+db = db[0:n_db]
+
+
+
+phi = np.array(data.loc[:,"phi"])
+h_data = np.array(data.loc[:,"GA"])
+
+
+n_phi = int(len(phi)/len(db))
+Phi = np.zeros(n_phi)
+for i in range(0,n_phi):
+    Phi[i] = phi[i*n_db]
+h = np.zeros((n_phi,n_db))
+
+k = 0
+for i in range(0,n_phi):
+    for j in range(0,n_db):
+        h[i,j] = h_data[k]
+        k+=1
+
+
+fig, ax = plt.subplots()
+
+level = np.linspace(0,0.4,7)
+cp=ax.contourf(db,Phi,h)
+
+fig.colorbar (cp)#Add a colorbar to a plot
+plt.xlabel('$\Delta b$',fontsize = 15.0)
+plt.ylabel("$\Phi$",fontsize = 15.0)
+plt.title(" GA effect for $\Delta_b$ and $\Phi$ ", fontsize = 15.0)
 
 
 
@@ -453,8 +567,8 @@ fig, ax=plt.subplots()
 cp=ax.contourf(sx,s_y,x0)
 
 fig.colorbar(cp)#Add a colorbar to a plot
-plt.xlabel('$s_x$')
-plt.ylabel("$s_y$")
+plt.xlabel('$s_x$',fontsize = 20.0)
+plt.ylabel("$s_y$",fontsize = 20.0)
 plt.title("Time spent as X")
 
 fig, ax=plt.subplots()
@@ -462,20 +576,20 @@ fig, ax=plt.subplots()
 cp=ax.contourf(sx,s_y,x1)
 
 fig.colorbar(cp)#Add a colorbar to a plot
-plt.xlabel('$s_x$')
-plt.ylabel("$s_y$")
+plt.xlabel('$s_x$',fontsize = 20.0)
+plt.ylabel("$s_y$",fontsize = 20.0)
 plt.title("Time spent as X after evolution")
 plt.plot(sx,sx,"red")
     
 fig, ax=plt.subplots()
 level = np.linspace(0,30,15)
-cp=ax.contourf(sx,s_y,y,levels = level)
+cp=ax.contourf(sx,s_y,y)
 
 fig.colorbar(cp)#Add a colorbar to a plot
 plt.plot(sx,sx,"red")
 
-plt.xlabel('$s_x$')
-plt.ylabel("$s_y$")
+plt.xlabel('$s_x$',fontsize = 20.0)
+plt.ylabel("$s_y$",fontsize = 20.0)
 plt.title("Time spent as Y")
 
 fig, ax=plt.subplots()
